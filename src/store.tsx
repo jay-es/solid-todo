@@ -1,5 +1,5 @@
 import { Component, createContext, useContext } from "solid-js";
-import { createStore } from "solid-js/store";
+import { ArrayFilterFn, createStore } from "solid-js/store";
 
 export type Todo = {
   id: number;
@@ -10,11 +10,13 @@ export type Todo = {
 type TodoStore = {
   state: { todos: Todo[] };
   addTodo: (text: string) => void;
+  toggleTodo: (id: number) => void;
 };
 
 const StoreContext = createContext<TodoStore>({
   state: { todos: [] },
   addTodo: () => {},
+  toggleTodo: () => {},
 });
 
 export const StoreProvider: Component = (props) => {
@@ -28,6 +30,14 @@ export const StoreProvider: Component = (props) => {
         ...todos,
         { id: ++todoId, text, done: false },
       ]);
+    },
+    toggleTodo(id: number) {
+      setState(
+        "todos",
+        ((todo) => todo.id === id) as ArrayFilterFn<Todo[]>,
+        "done",
+        (done) => !done
+      );
     },
   };
 
