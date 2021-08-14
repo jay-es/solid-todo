@@ -1,11 +1,10 @@
 import { batch, Component, For } from "solid-js";
 import styles from "./App.module.css";
-import { useStore } from "./store";
+import { state, addTodo, toggleTodo } from "./store";
 import { TodoForm } from "./TodoForm";
 import { TodoItem } from "./TodoItem";
 
 const App: Component = () => {
-  const { state, addTodo, toggleTodo } = useStore();
   const totalCount = () => state.todos.length;
   const undoneCount = () => state.todos.filter((v) => !v.done).length;
 

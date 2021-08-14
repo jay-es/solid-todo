@@ -1,4 +1,3 @@
-import { Component, createContext, useContext } from "solid-js";
 import { ArrayFilterFn, createStore } from "solid-js/store";
 
 export type Todo = {
@@ -7,45 +6,20 @@ export type Todo = {
   done: boolean;
 };
 
-type TodoStore = {
-  state: { todos: Todo[] };
-  addTodo: (text: string) => void;
-  toggleTodo: (id: number) => void;
+let todoId = 0;
+const [state, setState] = createStore<{ todos: Todo[] }>({ todos: [] });
+
+export { state };
+
+export const addTodo = (text: string) => {
+  setState("todos", (todos) => [...todos, { id: ++todoId, text, done: false }]);
 };
 
-const StoreContext = createContext<TodoStore>({
-  state: { todos: [] },
-  addTodo: () => {},
-  toggleTodo: () => {},
-});
-
-export const StoreProvider: Component = (props) => {
-  let todoId = 0;
-  const [state, setState] = createStore(StoreContext.defaultValue.state);
-
-  const store = {
-    state,
-    addTodo(text: string) {
-      setState("todos", (todos) => [
-        ...todos,
-        { id: ++todoId, text, done: false },
-      ]);
-    },
-    toggleTodo(id: number) {
-      setState(
-        "todos",
-        ((todo) => todo.id === id) as ArrayFilterFn<Todo[]>,
-        "done",
-        (done) => !done
-      );
-    },
-  };
-
-  return (
-    <StoreContext.Provider value={store}>
-      {props.children}
-    </StoreContext.Provider>
+export const toggleTodo = (id: number) => {
+  setState(
+    "todos",
+    ((todo) => todo.id === id) as ArrayFilterFn<Todo[]>,
+    "done",
+    (done) => !done
   );
 };
-
-export const useStore = () => useContext(StoreContext);

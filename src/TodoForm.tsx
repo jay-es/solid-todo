@@ -1,9 +1,8 @@
 import { Component, createSignal } from "solid-js";
-import { useStore } from "./store";
+import { addTodo } from "./store";
 
 export const TodoForm: Component = () => {
   const [text, setText] = createSignal("");
-  const { addTodo } = useStore();
 
   const handleSubmit = () => {
     if (!text()) return;

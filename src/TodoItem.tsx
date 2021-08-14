@@ -1,10 +1,8 @@
 import { Component } from "solid-js";
-import { Todo, useStore } from "./store";
+import { Todo, toggleTodo } from "./store";
 import styles from "./TodoItem.module.css";
 
 export const TodoItem: Component<Todo> = (props) => {
-  const { toggleTodo } = useStore();
-
   const handleClick = () => {
     toggleTodo(props.id);
   };
