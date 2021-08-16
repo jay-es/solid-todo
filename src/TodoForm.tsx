@@ -4,7 +4,8 @@ import { addTodo } from "./store";
 export const TodoForm: Component = () => {
   const [text, setText] = createSignal("");
 
-  const handleSubmit = () => {
+  const handleSubmit = (e: Event) => {
+    e.preventDefault();
     if (!text()) return;
 
     addTodo(text());
@@ -12,7 +13,7 @@ export const TodoForm: Component = () => {
   };
 
   return (
-    <form onClick={handleSubmit}>
+    <form onSubmit={handleSubmit}>
       <input value={text()} onInput={(e) => setText(e.currentTarget.value)} />
       <button type="submit" disabled={!text()}>
         add
