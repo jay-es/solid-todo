@@ -1,19 +1,35 @@
 import { Component } from "solid-js";
+import { css } from "solid-styled-components";
 import { Todo, toggleTodo } from "./store";
-import styles from "./TodoItem.module.css";
 
-export const TodoItem: Component<Todo> = (props) => {
+type Props = {
+  todo: Todo;
+};
+
+export const TodoItem: Component<Props> = (props) => {
   const handleClick = () => {
-    toggleTodo(props.id);
+    toggleTodo(props.todo.id);
   };
 
   return (
     <li
-      class={styles.item}
-      classList={{ [styles.done]: props.done }}
+      class={style}
+      classList={{ done: props.todo.done }}
       onClick={handleClick}
     >
-      <span>#{props.id}:</span> {props.text}
+      <span>#{props.todo.id}:</span> {props.todo.text}
     </li>
   );
 };
+
+const style = css`
+  cursor: pointer;
+
+  &.done {
+    text-decoration: line-through;
+  }
+
+  > span {
+    user-select: none;
+  }
+`;

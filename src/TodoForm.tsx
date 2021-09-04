@@ -1,4 +1,5 @@
 import { Component, createSignal } from "solid-js";
+import { css } from "solid-styled-components";
 import { addTodo } from "./store";
 
 export const TodoForm: Component = () => {
@@ -13,7 +14,7 @@ export const TodoForm: Component = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form class={style} onSubmit={handleSubmit}>
       <input value={text()} onInput={(e) => setText(e.currentTarget.value)} />
       <button type="submit" disabled={!text()}>
         add
@@ -21,3 +22,11 @@ export const TodoForm: Component = () => {
     </form>
   );
 };
+
+const style = css`
+  margin: 1rem;
+
+  > button {
+    margin-left: 0.5em;
+  }
+`;

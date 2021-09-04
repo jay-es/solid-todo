@@ -28,7 +28,7 @@ const App: Component = () => {
       </p>
       <ul class={styles.list}>
         <For each={state.todos} fallback={<p>No Tasks</p>}>
-          {(todo) => <TodoItem {...todo} />}
+          {(todo) => <TodoItem todo={todo} />}
         </For>
       </ul>
     </div>

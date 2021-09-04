@@ -1,9 +1,0 @@
-.item {
-  cursor: pointer;
-}
-.item span {
-  user-select: none;
-}
-.done {
-  text-decoration: line-through;
-}
