@@ -1,22 +1,20 @@
-import { Component, createSignal } from "solid-js";
+import { Component, createSignal, JSX } from "solid-js";
 import { css } from "solid-styled-components";
 import { addTodo } from "./store";
 
-export const TodoForm: Component = () => {
-  const [text, setText] = createSignal("");
+type ContainerProps = {};
 
-  const handleSubmit = (e: Event) => {
-    e.preventDefault();
-    if (!text()) return;
+type Props = ContainerProps & {
+  handleSubmit: JSX.DOMAttributes<HTMLFormElement>["onSubmit"];
+  handleTextInput: JSX.DOMAttributes<HTMLInputElement>["onInput"];
+  textValue: string;
+};
 
-    addTodo(text());
-    setText("");
-  };
-
+const BaseComponent: Component<Props> = (props) => {
   return (
-    <form class={style} onSubmit={handleSubmit}>
-      <input value={text()} onInput={(e) => setText(e.currentTarget.value)} />
-      <button type="submit" disabled={!text()}>
+    <form class={style} onSubmit={props.handleSubmit}>
+      <input value={props.textValue} onInput={props.handleTextInput} />
+      <button type="submit" disabled={!props.textValue}>
         add
       </button>
     </form>
@@ -30,3 +28,26 @@ const style = css`
     margin-left: 0.5em;
   }
 `;
+
+const Container: Component<ContainerProps> = (props) => {
+  const [text, setText] = createSignal("");
+
+  const handleSubmit = (ev: Event) => {
+    ev.preventDefault();
+    if (!text()) return;
+
+    addTodo(text());
+    setText("");
+  };
+
+  return (
+    <BaseComponent
+      {...props}
+      handleSubmit={handleSubmit}
+      handleTextInput={(ev) => setText(ev.currentTarget.value)}
+      textValue={text()}
+    />
+  );
+};
+
+export const TodoForm = Container;
