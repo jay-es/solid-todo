@@ -15,6 +15,10 @@ export const addTodo = (text: string) => {
   setState("todos", (todos) => [...todos, { id: ++todoId, text, done: false }]);
 };
 
+export const deleteTodo = (id: number) => {
+  setState("todos", (todos) => todos.filter((v) => v.id !== id));
+};
+
 export const toggleTodo = (id: number) => {
   setState(
     "todos",

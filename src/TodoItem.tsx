@@ -1,43 +1,60 @@
-import { Component, JSX } from "solid-js";
+import { Component } from "solid-js";
 import { css } from "solid-styled-components";
-import { Todo, toggleTodo } from "./store";
+import type { Todo } from "./store";
+import * as store from "./store";
 
 type ContainerProps = {
   todo: Todo;
 };
 
 type Props = ContainerProps & {
-  handleClick: JSX.DOMAttributes<HTMLLIElement>["onClick"];
+  deleteTodo: () => void;
+  toggleTodo: () => void;
 };
 
 const BaseComponent: Component<Props> = (props) => (
-  <li
-    class={style}
-    classList={{ done: props.todo.done }}
-    onClick={props.handleClick}
-  >
-    <span>#{props.todo.id}:</span> {props.todo.text}
+  <li class={style}>
+    <label classList={{ done: props.todo.done }}>
+      <input
+        type="checkbox"
+        checked={props.todo.done}
+        onchange={props.toggleTodo}
+      />
+      <span>#{props.todo.id}:</span> {props.todo.text}
+    </label>
+    <button onclick={props.deleteTodo}>delete</button>
   </li>
 );
 
 const style = css`
-  cursor: pointer;
-
-  &.done {
+  > .done {
     text-decoration: line-through;
   }
 
-  > span {
+  > label {
+    display: inline-block;
+    width: 16em;
+    text-align: left;
+    cursor: pointer;
     user-select: none;
+  }
+
+  > button {
+    margin-left: 0.5em;
   }
 `;
 
 const Container: Component<ContainerProps> = (props) => {
-  const handleClick = () => {
-    toggleTodo(props.todo.id);
+  const toggleTodo = () => {
+    store.toggleTodo(props.todo.id);
+  };
+  const deleteTodo = () => {
+    store.deleteTodo(props.todo.id);
   };
 
-  return <BaseComponent {...props} handleClick={handleClick} />;
+  return (
+    <BaseComponent {...props} toggleTodo={toggleTodo} deleteTodo={deleteTodo} />
+  );
 };
 
 export const TodoItem = Container;
