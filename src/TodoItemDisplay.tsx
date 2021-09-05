@@ -7,12 +7,12 @@ type ContainerProps = {
   enterEditable: () => void;
 };
 
-type Props = ContainerProps & {
+type TemplateProps = ContainerProps & {
   deleteTodo: () => void;
   toggleTodo: () => void;
 };
 
-const BaseComponent: Component<Props> = (props) => (
+const Template: Component<TemplateProps> = (props) => (
   <div class={style}>
     <label classList={{ done: props.todo.done }}>
       <input
@@ -56,7 +56,7 @@ const Container: Component<ContainerProps> = (props) => {
   };
 
   return (
-    <BaseComponent {...props} toggleTodo={toggleTodo} deleteTodo={deleteTodo} />
+    <Template {...props} toggleTodo={toggleTodo} deleteTodo={deleteTodo} />
   );
 };
 

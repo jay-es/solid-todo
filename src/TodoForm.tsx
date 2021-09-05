@@ -4,22 +4,20 @@ import { todoStore } from "./store";
 
 type ContainerProps = {};
 
-type Props = ContainerProps & {
+type TemplateProps = ContainerProps & {
   handleSubmit: JSX.DOMAttributes<HTMLFormElement>["onSubmit"];
   handleTextInput: JSX.DOMAttributes<HTMLInputElement>["onInput"];
   textValue: string;
 };
 
-const BaseComponent: Component<Props> = (props) => {
-  return (
-    <form class={style} onSubmit={props.handleSubmit}>
-      <input value={props.textValue} onInput={props.handleTextInput} />
-      <button type="submit" disabled={!props.textValue}>
-        add
-      </button>
-    </form>
-  );
-};
+const Template: Component<TemplateProps> = (props) => (
+  <form class={style} onSubmit={props.handleSubmit}>
+    <input value={props.textValue} onInput={props.handleTextInput} />
+    <button type="submit" disabled={!props.textValue}>
+      add
+    </button>
+  </form>
+);
 
 const style = css`
   margin: 1rem;
@@ -41,7 +39,7 @@ const Container: Component<ContainerProps> = (props) => {
   };
 
   return (
-    <BaseComponent
+    <Template
       {...props}
       handleSubmit={handleSubmit}
       handleTextInput={(ev) => setText(ev.currentTarget.value)}

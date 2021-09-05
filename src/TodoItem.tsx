@@ -8,13 +8,13 @@ type ContainerProps = {
   todo: Todo;
 };
 
-type Props = ContainerProps & {
+type TemplateProps = ContainerProps & {
   editable: boolean;
   enterEditable: () => void;
   exitEditable: () => void;
 };
 
-const BaseComponent: Component<Props> = (props) => (
+const Template: Component<TemplateProps> = (props) => (
   <li class={style}>
     {props.editable ? (
       <TodoItemEdit {...props} />
@@ -32,7 +32,7 @@ const Container: Component<ContainerProps> = (props) => {
   const [editable, setEditable] = createSignal(false);
 
   return (
-    <BaseComponent
+    <Template
       {...props}
       editable={editable()}
       enterEditable={setEditable.bind(null, true)}

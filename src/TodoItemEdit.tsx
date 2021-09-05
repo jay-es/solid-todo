@@ -7,13 +7,13 @@ type ContainerProps = {
   exitEditable: () => void;
 };
 
-type Props = ContainerProps & {
+type TemplateProps = ContainerProps & {
   text: string;
   onInputText: JSX.DOMAttributes<HTMLInputElement>["onInput"];
   submit: () => void;
 };
 
-const BaseComponent: Component<Props> = (props) => (
+const Template: Component<TemplateProps> = (props) => (
   <div class={style}>
     <input value={props.text} onInput={props.onInputText} />
     <button onClick={props.submit} disabled={!props.text}>
@@ -39,7 +39,7 @@ const style = css`
 const Container: Component<ContainerProps> = (props) => {
   const [text, setText] = createSignal(props.todo.text);
 
-  const onInputText: Props["onInputText"] = (ev) => {
+  const onInputText: TemplateProps["onInputText"] = (ev) => {
     setText(ev.currentTarget.value);
   };
 
@@ -50,7 +50,7 @@ const Container: Component<ContainerProps> = (props) => {
   };
 
   return (
-    <BaseComponent
+    <Template
       {...props}
       text={text()}
       onInputText={onInputText}
