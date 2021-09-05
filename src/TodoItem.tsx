@@ -1,59 +1,43 @@
-import { Component } from "solid-js";
+import { Component, createSignal } from "solid-js";
 import { css } from "solid-styled-components";
 import type { Todo } from "./store";
-import { todoStore } from "./store";
+import { TodoItemDisplay } from "./TodoItemDisplay";
+import { TodoItemEdit } from "./TodoItemEdit";
 
 type ContainerProps = {
   todo: Todo;
 };
 
 type Props = ContainerProps & {
-  deleteTodo: () => void;
-  toggleTodo: () => void;
+  editable: boolean;
+  enterEditable: () => void;
+  exitEditable: () => void;
 };
 
 const BaseComponent: Component<Props> = (props) => (
   <li class={style}>
-    <label classList={{ done: props.todo.done }}>
-      <input
-        type="checkbox"
-        checked={props.todo.done}
-        onchange={props.toggleTodo}
-      />
-      <span>#{props.todo.id}:</span> {props.todo.text}
-    </label>
-    <button onclick={props.deleteTodo}>delete</button>
+    {props.editable ? (
+      <TodoItemEdit {...props} />
+    ) : (
+      <TodoItemDisplay {...props} />
+    )}
   </li>
 );
 
 const style = css`
-  > .done {
-    text-decoration: line-through;
-  }
-
-  > label {
-    display: inline-block;
-    width: 16em;
-    text-align: left;
-    cursor: pointer;
-    user-select: none;
-  }
-
-  > button {
-    margin-left: 0.5em;
-  }
+  margin-bottom: 0.5em;
 `;
 
 const Container: Component<ContainerProps> = (props) => {
-  const toggleTodo = () => {
-    todoStore.toggle(props.todo.id);
-  };
-  const deleteTodo = () => {
-    todoStore.delete(props.todo.id);
-  };
+  const [editable, setEditable] = createSignal(false);
 
   return (
-    <BaseComponent {...props} toggleTodo={toggleTodo} deleteTodo={deleteTodo} />
+    <BaseComponent
+      {...props}
+      editable={editable()}
+      enterEditable={setEditable.bind(null, true)}
+      exitEditable={setEditable.bind(null, false)}
+    />
   );
 };
 

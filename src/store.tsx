@@ -20,6 +20,14 @@ export const todoStore = {
   delete: (id: number) => {
     setState("todos", (todos) => todos.filter((v) => v.id !== id));
   },
+  edit: (id: number, text: string) => {
+    setState(
+      "todos",
+      ((todo) => todo.id === id) as ArrayFilterFn<Todo[]>,
+      "text",
+      text
+    );
+  },
   toggle: (id: number) => {
     setState(
       "todos",
