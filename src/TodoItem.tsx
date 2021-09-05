@@ -1,7 +1,7 @@
 import { Component } from "solid-js";
 import { css } from "solid-styled-components";
 import type { Todo } from "./store";
-import * as store from "./store";
+import { todoStore } from "./store";
 
 type ContainerProps = {
   todo: Todo;
@@ -46,10 +46,10 @@ const style = css`
 
 const Container: Component<ContainerProps> = (props) => {
   const toggleTodo = () => {
-    store.toggleTodo(props.todo.id);
+    todoStore.toggle(props.todo.id);
   };
   const deleteTodo = () => {
-    store.deleteTodo(props.todo.id);
+    todoStore.delete(props.todo.id);
   };
 
   return (

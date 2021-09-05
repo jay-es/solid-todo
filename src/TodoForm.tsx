@@ -1,6 +1,6 @@
 import { Component, createSignal, JSX } from "solid-js";
 import { css } from "solid-styled-components";
-import { addTodo } from "./store";
+import { todoStore } from "./store";
 
 type ContainerProps = {};
 
@@ -36,7 +36,7 @@ const Container: Component<ContainerProps> = (props) => {
     ev.preventDefault();
     if (!text()) return;
 
-    addTodo(text());
+    todoStore.add(text());
     setText("");
   };
 

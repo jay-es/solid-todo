@@ -1,22 +1,22 @@
 import { batch, Component, For } from "solid-js";
 import styles from "./App.module.css";
-import { state, addTodo, toggleTodo } from "./store";
+import { todoStore } from "./store";
 import { TodoForm } from "./TodoForm";
 import { TodoItem } from "./TodoItem";
 
 const App: Component = () => {
-  const totalCount = () => state.todos.length;
-  const undoneCount = () => state.todos.filter((v) => !v.done).length;
+  const totalCount = () => todoStore.state.todos.length;
+  const undoneCount = () => todoStore.state.todos.filter((v) => !v.done).length;
 
   // リストが空の状態を確認するため、処理を遅らせる
   setTimeout(() => {
     if (totalCount()) return;
 
     batch(() => {
-      addTodo("task1");
-      addTodo("task2");
-      addTodo("task3");
-      toggleTodo(1);
+      todoStore.add("task1");
+      todoStore.add("task2");
+      todoStore.add("task3");
+      todoStore.toggle(1);
     });
   }, 400);
 
@@ -27,7 +27,7 @@ const App: Component = () => {
         {totalCount} items ({undoneCount} undone)
       </p>
       <ul class={styles.list}>
-        <For each={state.todos} fallback={<p>No Tasks</p>}>
+        <For each={todoStore.state.todos} fallback={<p>No Tasks</p>}>
           {(todo) => <TodoItem todo={todo} />}
         </For>
       </ul>

@@ -9,21 +9,23 @@ export type Todo = {
 let todoId = 0;
 const [state, setState] = createStore<{ todos: Todo[] }>({ todos: [] });
 
-export { state };
-
-export const addTodo = (text: string) => {
-  setState("todos", (todos) => [...todos, { id: ++todoId, text, done: false }]);
-};
-
-export const deleteTodo = (id: number) => {
-  setState("todos", (todos) => todos.filter((v) => v.id !== id));
-};
-
-export const toggleTodo = (id: number) => {
-  setState(
-    "todos",
-    ((todo) => todo.id === id) as ArrayFilterFn<Todo[]>,
-    "done",
-    (done) => !done
-  );
+export const todoStore = {
+  state,
+  add: (text: string) => {
+    setState("todos", (todos) => [
+      ...todos,
+      { id: ++todoId, text, done: false },
+    ]);
+  },
+  delete: (id: number) => {
+    setState("todos", (todos) => todos.filter((v) => v.id !== id));
+  },
+  toggle: (id: number) => {
+    setState(
+      "todos",
+      ((todo) => todo.id === id) as ArrayFilterFn<Todo[]>,
+      "done",
+      (done) => !done
+    );
+  },
 };
