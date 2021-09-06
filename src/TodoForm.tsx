@@ -5,15 +5,15 @@ import { todoStore } from "./store";
 type ContainerProps = {};
 
 type TemplateProps = ContainerProps & {
-  handleSubmit: JSX.DOMAttributes<HTMLFormElement>["onSubmit"];
-  handleTextInput: JSX.DOMAttributes<HTMLInputElement>["onInput"];
-  textValue: string;
+  text: string;
+  onInputText: JSX.DOMAttributes<HTMLInputElement>["onInput"];
+  onSubmit: JSX.DOMAttributes<HTMLFormElement>["onSubmit"];
 };
 
 const Template: Component<TemplateProps> = (props) => (
-  <form class={style} onSubmit={props.handleSubmit}>
-    <input value={props.textValue} onInput={props.handleTextInput} />
-    <button type="submit" disabled={!props.textValue}>
+  <form class={style} onSubmit={props.onSubmit}>
+    <input value={props.text} onInput={props.onInputText} />
+    <button type="submit" disabled={!props.text}>
       add
     </button>
   </form>
@@ -30,7 +30,11 @@ const style = css`
 const Container: Component<ContainerProps> = (props) => {
   const [text, setText] = createSignal("");
 
-  const handleSubmit = (ev: Event) => {
+  const onInputText: TemplateProps["onInputText"] = (ev) => {
+    setText(ev.currentTarget.value);
+  };
+
+  const onSubmit: TemplateProps["onSubmit"] = (ev) => {
     ev.preventDefault();
     if (!text()) return;
 
@@ -41,9 +45,9 @@ const Container: Component<ContainerProps> = (props) => {
   return (
     <Template
       {...props}
-      handleSubmit={handleSubmit}
-      handleTextInput={(ev) => setText(ev.currentTarget.value)}
-      textValue={text()}
+      text={text()}
+      onInputText={onInputText}
+      onSubmit={onSubmit}
     />
   );
 };
